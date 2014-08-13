@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+  <title>FileRead Example</title>
+</head>
+<body>
+  <input type="file" id="files" name="files[]" multiple /><br />
+  <img id="gif" src="" />
+
+  <script src="../dist/gif-encode.js" type="text/javascript"></script>
+  <script>
+    var canvasWidth = 100,
+        canvasHeight = 100;
+
+    function handleFileSelect(evt) {
+      var files = evt.target.files,
+          frames = [],
+          numFrames = 0,
+          gifEncoder = new GIF(canvasWidth, canvasHeight),
+          canvas = document.createElement("canvas"),
+          context = canvas.getContext("2d");
+
+      // Setup canvas.
+      canvas.width = canvasWidth;
+      canvas.height = canvasHeight;
+
+      // Begin encoding process.
+      gifEncoder.start();
+
+      // Process all selected files.
+      for (var i = 0, f; f = files[i]; i++) {
+        // Only process image files.
+        if (!f.type.match("image.*")) {
+          continue;
+        }
+
+        var reader = new FileReader();
+        reader.onload = (function(file) {
+          return function(e) {
+            var image = new Image();
+            // Keep track of number of frames.
+            numFrames++;
+            image.onload = function() {
+              // Add a new GIF frame for each loaded image.
+              frames.push(image);
+            };
+            image.src = e.target.result;
+          };
+        })(f);
+
+        // Read in the image file as a data URL.
+        reader.readAsDataURL(f);
+      }
+
+      // Defer all GIF frames until they are fully loaded.
+      var deferImagesInterval = window.setInterval(function() {
+        if (numFrames !== frames.length) {
+          return;
+        }
+
+        // For each frame draw to canvas then pass canvas context to encoder.
+        frames.forEach(function(frame) {
+          context.drawImage(frame, 0, 0, canvasWidth, canvasHeight);
+          gifEncoder.addFrame(context);
+        });
+        // Finished encoding -- add trailer byte.
+        gifEncoder.finish();
+
+        // Display new GIF image.
+        var gif = new Image();
+        gif.onload = function() {
+          document.getElementById("gif").src = gif.src;
+        };
+        gif.src = gifEncoder.toDataURI();
+        clearInterval(deferImagesInterval);
+      }, 10);
+    }
+
+    document.getElementById("files").addEventListener("change", handleFileSelect, false);
+  </script>
+</body>
+</html>

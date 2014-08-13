@@ -1,0 +1,16 @@
+{
+  "name": "gif-make",
+  "version": "1.0.0",
+  "description": "A Javascript library for creating GIF images.",
+  "main": "src/gif-encoder.js",
+  "keywords": [
+    "javascript",
+    "gif",
+    "encode",
+    "gif-encoder",
+    "js",
+    "library"
+  ],
+  "author": "Anthony Calandra <anthony@anthony-calandra.com>",
+  "license": "GNU"
+}
