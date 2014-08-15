@@ -71,9 +71,8 @@ function GIF(width, height, defaultDelay, imageQuality) {
 
   this.writeImageData = function(indexedPixels) {
     // GIF writes image data using LZW compression.
-    //var lzw = new LZWEncoder(this.width, this.height, indexedPixels, 8);
-    //lzw.encode(this.byteArray);
-
+    var lzw = new LZWEncoder(this.width, this.height, indexedPixels, 8);
+    lzw.encode(this.byteArray);
   };
 
   this.writeNetscapeExtension = function() {
@@ -193,7 +192,7 @@ GIF.prototype.saveToFile = function(name, cb, path) {
 };
 
 var NeuQuant = require("./neuquant.js"),
-    LZWEncoder = require("./lzw-encoder-new.js"),
+    LZWEncoder = require("./lzw-encoder.js"),
     ByteArray = require("./bytearray.js"),
     inNode = typeof window === "undefined";
 
