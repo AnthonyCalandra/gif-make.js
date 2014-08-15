@@ -2,7 +2,7 @@
   "name": "gif-make",
   "version": "1.0.0",
   "description": "A Javascript library for creating GIF images.",
-  "main": "src/gif-encoder.js",
+  "main": "src/gif-make.js",
   "keywords": [
     "javascript",
     "gif",
