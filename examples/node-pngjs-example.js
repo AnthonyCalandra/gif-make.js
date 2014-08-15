@@ -25,7 +25,7 @@ function addPNGFrame(imageName) {
 
 var fs = require("fs"),
     PNG = require("pngjs").PNG,
-    GIF = require("../src/gif-encoder.js"),
+    GIF = require("../src/gif-make.js"),
     gif  = new GIF(420, 420),
     numFrames = 0;
 

@@ -4,6 +4,7 @@ function GIF(width, height, defaultDelay, imageQuality) {
   this.height = height;
   this.defaultDelay = defaultDelay || 1000;
   this.imageQuality = imageQuality || 10;
+  this.frames = [];
   this.numFrames = 0;
 
   // Logical Screen Descriptor
@@ -43,11 +44,11 @@ function GIF(width, height, defaultDelay, imageQuality) {
     // Image width and height (by default is the size of canvas).
     this.byteArray.writeUnsignedShort(this.width);
     this.byteArray.writeUnsignedShort(this.height);
-    // Local color table is set only for frames other tha the first. First
+    // Local color table is set only for frames other than the first. First
     // frame uses the global color table.
     if (this.numFrames > 0) {
       // Packed byte: local color table, interlace(?), no sort, reserved,
-      // table is 2^8, in size.
+      // table is 2^8 in size.
       this.byteArray.writeUnsignedByte(0x80 | 7);
     } else {
       this.byteArray.writeUnsignedByte(0);
@@ -70,8 +71,9 @@ function GIF(width, height, defaultDelay, imageQuality) {
 
   this.writeImageData = function(indexedPixels) {
     // GIF writes image data using LZW compression.
-    var lzw = new LZWEncoder(this.width, this.height, indexedPixels, 8);
-    lzw.encode(this.byteArray);
+    //var lzw = new LZWEncoder(this.width, this.height, indexedPixels, 8);
+    //lzw.encode(this.byteArray);
+
   };
 
   this.writeNetscapeExtension = function() {
@@ -191,7 +193,7 @@ GIF.prototype.saveToFile = function(name, cb, path) {
 };
 
 var NeuQuant = require("./neuquant.js"),
-    LZWEncoder = require("./lzw-encoder.js"),
+    LZWEncoder = require("./lzw-encoder-new.js"),
     ByteArray = require("./bytearray.js"),
     inNode = typeof window === "undefined";
 
