@@ -22,7 +22,7 @@ start()
 -
 Called before adding frames. This method starts the encoding process by writing the GIF89a header to the underlying ByteArray.
 
-addFrame(imageContext [, delay])
+addFrame(imageContext [, delay = defaultDelay])
 -
 Add a GIF frame sto the underlying ByteArray given an imageContext and delay. The delay is the time shown for that frame only.
 
